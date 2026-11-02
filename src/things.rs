@@ -34,6 +34,8 @@ pub struct Motive {
     pub speed: f32,
     pub move_time: f32,
     pub move_cool: f32,
+    pub delta_yaw: f32,
+    pub yaw_time: f32,
 }
 
 impl Motive {
@@ -42,6 +44,8 @@ impl Motive {
             speed: 0.0,
             move_time: 1.0,
             move_cool: 1.0,
+            delta_yaw: 0.0,
+            yaw_time: 0.0,
         }
     }
 }
