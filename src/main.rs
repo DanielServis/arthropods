@@ -8,7 +8,7 @@ use x11::xlib;
 mod things;
 mod arthropods;
 
-use arthropods::{CellarSpider, HouseSpider, Harvestman};
+use arthropods::{CellarSpider, HouseSpider, Harvestman, CraneFly};
 
 fn compile_shader(kind: GLenum, source: &str) -> Result<GLuint, String> {
     let c_src = CString::new(source).map_err(|e| e.to_string())?;
@@ -180,6 +180,8 @@ fn main() {
 
     let mut harvestman = Harvestman::new(0.0, 0.0, 0.0);
 
+    let mut crane_fly = CraneFly::new(0.0, 0.0, 0.0);
+
     while !window.should_close() {
         unsafe {
             gl::ClearColor(0.133 ,0.141, 0.212, 1.0);
@@ -230,6 +232,10 @@ fn main() {
         harvestman.behave(delta_time);
         harvestman.update(delta_time);
         harvestman.draw(model_loc);
+
+        crane_fly.behave(delta_time);
+        crane_fly.update(delta_time);
+        crane_fly.draw(model_loc);
 
         window.swap_buffers();
         glfw.poll_events();
