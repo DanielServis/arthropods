@@ -6,6 +6,7 @@ use std::{env, ffi::CString};
 use x11::xlib;
 
 mod things;
+mod limbs;
 mod arthropods;
 
 use arthropods::{CellarSpider, HouseSpider, Harvestman, CraneFly};
