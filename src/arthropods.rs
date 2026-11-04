@@ -6,6 +6,11 @@ use rand::RngExt;
 use crate::things::{Transform, Motive, Mesh, Model};
 use crate::limbs::{Leg, LegAttach, Wing, WingAttach};
 
+const BORDER_TOP: f32 = -120.0;
+const BORDER_BOTTOM: f32 = 90.0;
+const BORDER_LEFT: f32 = -90.0;
+const BORDER_RIGHT: f32 = 90.0;
+
 pub struct CellarSpider {
     body_model: Model,
     legseg_model: Model,
@@ -198,10 +203,10 @@ impl CellarSpider {
         let face_z = -self.transform.yaw.cos() * self.transform.pit.cos();
 
         let facing_out = 
-            (self.transform.x > 120.0 && face_x > 0.0) ||
-            (self.transform.x < -120.0 && face_x < 0.0) ||
-            (self.transform.z > 80.0 && face_z > 0.0) ||
-            (self.transform.z < -80.0 && face_z < 0.0);
+            (self.transform.x > BORDER_RIGHT && face_x > 0.0) ||
+            (self.transform.x < BORDER_LEFT && face_x < 0.0) ||
+            (self.transform.z > BORDER_BOTTOM && face_z > 0.0) ||
+            (self.transform.z < BORDER_TOP && face_z < 0.0);
 
         if facing_out {
             self.transform.yaw += delta_time;
@@ -655,10 +660,10 @@ impl HouseSpider {
         let face_z = -self.transform.yaw.cos() * self.transform.pit.cos();
 
         let facing_out = 
-            (self.transform.x > 100.0 && face_x > 0.0) ||
-            (self.transform.x < -100.0 && face_x < 0.0) ||
-            (self.transform.z > 100.0 && face_z > 0.0) ||
-            (self.transform.z < -80.0 && face_z < 0.0);
+            (self.transform.x > BORDER_RIGHT && face_x > 0.0) ||
+            (self.transform.x < BORDER_LEFT && face_x < 0.0) ||
+            (self.transform.z > BORDER_BOTTOM && face_z > 0.0) ||
+            (self.transform.z < BORDER_TOP && face_z < 0.0);
 
         if facing_out {
             self.transform.yaw += delta_time;
@@ -1110,10 +1115,10 @@ impl HouseCentipede {
         let face_z = -self.transform.yaw.cos() * self.transform.pit.cos();
 
         let facing_out = 
-            (self.transform.x > 120.0 && face_x > 0.0) ||
-            (self.transform.x < -120.0 && face_x < 0.0) ||
-            (self.transform.z > 80.0 && face_z > 0.0) ||
-            (self.transform.z < -80.0 && face_z < 0.0);
+            (self.transform.x > BORDER_RIGHT && face_x > 0.0) ||
+            (self.transform.x < BORDER_LEFT && face_x < 0.0) ||
+            (self.transform.z > BORDER_BOTTOM && face_z > 0.0) ||
+            (self.transform.z < BORDER_TOP && face_z < 0.0); 
 
         if facing_out {
             self.transform.yaw += delta_time;
@@ -1525,10 +1530,10 @@ impl Harvestman {
         let face_z = -self.transform.yaw.cos() * self.transform.pit.cos();
 
         let facing_out = 
-            (self.transform.x > 100.0 && face_x > 0.0) ||
-            (self.transform.x < -100.0 && face_x < 0.0) ||
-            (self.transform.z > 100.0 && face_z > 0.0) ||
-            (self.transform.z < -80.0 && face_z < 0.0);
+            (self.transform.x > BORDER_RIGHT && face_x > 0.0) ||
+            (self.transform.x < BORDER_LEFT && face_x < 0.0) ||
+            (self.transform.z > BORDER_BOTTOM && face_z > 0.0) ||
+            (self.transform.z < BORDER_TOP && face_z < 0.0);
 
         if facing_out {
             self.transform.yaw += delta_time;
@@ -1956,10 +1961,10 @@ impl CraneFly {
         let face_z = -self.transform.yaw.cos() * self.transform.pit.cos();
 
         let facing_out = 
-            (self.transform.x > 120.0 && face_x > 0.0) ||
-            (self.transform.x < -120.0 && face_x < 0.0) ||
-            (self.transform.z > 80.0 && face_z > 0.0) ||
-            (self.transform.z < -80.0 && face_z < 0.0);
+            (self.transform.x > BORDER_RIGHT && face_x > 0.0) ||
+            (self.transform.x < BORDER_LEFT && face_x < 0.0) ||
+            (self.transform.z > BORDER_BOTTOM && face_z > 0.0) ||
+            (self.transform.z < BORDER_TOP && face_z < 0.0);
 
         if facing_out {
             self.transform.yaw += delta_time;
