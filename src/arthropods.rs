@@ -6,10 +6,10 @@ use rand::RngExt;
 use crate::things::{Transform, Motive, Mesh, Model};
 use crate::limbs::{Leg, LegAttach, Wing, WingAttach};
 
-const BORDER_TOP: f32 = -120.0;
-const BORDER_BOTTOM: f32 = 90.0;
-const BORDER_LEFT: f32 = -90.0;
-const BORDER_RIGHT: f32 = 90.0;
+const BORDER_TOP: f32 = -60.0;
+const BORDER_BOTTOM: f32 = 45.0;
+const BORDER_LEFT: f32 = -45.0;
+const BORDER_RIGHT: f32 = 45.0;
 
 pub struct CellarSpider {
     body_model: Model,
@@ -47,20 +47,20 @@ impl CellarSpider {
             leg.coxa.transform.z = att.offset.z;
             leg.coxa.transform.yaw = att.base_yaw;
             leg.coxa.transform.pit = 20.0_f32.to_radians();
-            leg.coxa.length = 6.0 * scale;
+            leg.coxa.length = 2.0 * scale;
 
             leg.femur.transform.x = 0.0;
             leg.femur.transform.y = -leg.coxa.length;
             leg.femur.transform.z = 0.0;
             leg.femur.transform.pit = 40.0_f32.to_radians();
-            leg.femur.length = 6.0 * scale;
+            leg.femur.length = 2.0 * scale;
 
             leg.tibia.transform.y = -leg.femur.length;
             leg.tibia.transform.pit = (-70.0_f32).to_radians();
-            leg.tibia.length = 8.0 * scale;
+            leg.tibia.length = 3.0 * scale;
 
             leg.tarsus.transform.y = -leg.tibia.length;
-            leg.tarsus.length = 1.5 * scale;
+            leg.tarsus.length = 0.5 * scale;
 
             let leg_reach = leg.coxa.length + leg.femur.length
                 + leg.tibia.length + leg.tarsus.length;
@@ -129,8 +129,8 @@ impl CellarSpider {
     }
 
     pub fn update(&mut self, delta_time: f32) {
-        const STEP_TRIGGER_DIST: f32 = 5.0;
-        const STEP_HEIGHT: f32 = 10.0;
+        const STEP_TRIGGER_DIST: f32 = 2.0;
+        const STEP_HEIGHT: f32 = 5.0;
 
         let stride = STEP_TRIGGER_DIST + 0.1 * self.motive.speed;
         let step_speed = (self.motive.speed / (2.0 * stride)).max(5.0);
@@ -223,75 +223,75 @@ impl CellarSpider {
 
     fn create_legattach() -> [LegAttach; 8] {
         [
-            LegAttach { offset: Vec3::new(0.25, -0.5, 0.3), base_yaw: (-140.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(0.25, -0.5, 0.0), base_yaw: (-110.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(0.25, -0.5, -0.2), base_yaw: (-80.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(0.25, -0.5, -0.75), base_yaw: (-45.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.3), base_yaw: (140.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.0), base_yaw: (110.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, -0.2), base_yaw: (80.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, -0.75), base_yaw: (45.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.1, 0.03), base_yaw: (-140.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.1, 0.0), base_yaw: (-110.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.1, -0.02), base_yaw: (-80.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.1, -0.075), base_yaw: (-45.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.1, 0.03), base_yaw: (140.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.1, 0.0), base_yaw: (110.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.1, -0.02), base_yaw: (80.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.1, -0.075), base_yaw: (45.0_f32).to_radians() },
         ]
     }
 
     fn leg_scale() -> [f32; 8] {
         [
-            0.8, 1.0, 1.1, 1.0,
-            0.8, 1.0, 1.1, 1.0,
+            0.8, 1.0, 1.1, 1.1,
+            0.8, 1.0, 1.1, 1.1,
         ]
     }
 
     fn create_body_mesh() -> Mesh {
         let vertices = vec![
-            -0.1875, -0.2025, -1.25,  // front square
-            0.1875, -0.2025, -1.25,
-            -0.1875, -0.6975, -1.25,
-            0.1875, -0.6975, -1.25,
-            -0.1875, -0.2025,  0.25,  // back square
-            0.1875, -0.2025,  0.25,
-            -0.1875, -0.6975,  0.25,
-            0.1875, -0.6975,  0.25,
-            -0.375,  -0.2025, -0.875, // left square
-            -0.375,  -0.2025, -0.125,
-            -0.375,  -0.6975, -0.875,
-            -0.375,  -0.6975, -0.125,
-            0.375,  -0.2025, -0.875, // right square
-            0.375,  -0.2025, -0.125,
-            0.375,  -0.6975, -0.875,
-            0.375,  -0.6975, -0.125,
-            -0.1875,  0.045,  -0.875, // top square
-            0.1875,  0.045,  -0.875,
-            -0.1875,  0.045,  -0.125,
-            0.1875,  0.045,  -0.125,
-            -0.1875, -0.945,  -0.875, // bottom square
-            0.1875, -0.945,  -0.875,
-            -0.1875, -0.945,  -0.125,
-            0.1875, -0.945,  -0.125,
+            -0.049091, -0.053018, -0.300000,  // front square
+            0.049091, -0.053018, -0.300000,
+            -0.049091, -0.182618, -0.300000,
+            0.049091, -0.182618, -0.300000,
+            -0.049091, -0.053018,  0.092727,  // back square
+            0.049091, -0.053018,  0.092727,
+            -0.049091, -0.182618,  0.092727,
+            0.049091, -0.182618,  0.092727,
+            -0.098182, -0.053018, -0.201818,  // left square
+            -0.098182, -0.053018, -0.005455,
+            -0.098182, -0.182618, -0.201818,
+            -0.098182, -0.182618, -0.005455,
+            0.098182, -0.053018, -0.201818,  // right square
+            0.098182, -0.053018, -0.005455,
+            0.098182, -0.182618, -0.201818,
+            0.098182, -0.182618, -0.005455,
+            -0.049091,  0.011782, -0.201818,  // top square
+            0.049091,  0.011782, -0.201818,
+            -0.049091,  0.011782, -0.005455,
+            0.049091,  0.011782, -0.005455,
+            -0.049091, -0.247418, -0.201818,  // bottom square
+            0.049091, -0.247418, -0.201818,
+            -0.049091, -0.247418, -0.005455,
+            0.049091, -0.247418, -0.005455,
 
-            -0.25,  0.25, -0.3125,  // front square
-            0.25,  0.25, -0.3125,
-            -0.25, -0.25, -0.3125,
-            0.25, -0.25, -0.3125,
-            -0.125, 0.125, 2.1875,  // back square
-            0.125, 0.125, 2.1875,
-            -0.125,-0.125, 2.1875,
-            0.125,-0.125, 2.1875,
-            -0.5,   0.25,  0.3125,  // left square
-            -0.4,   0.2,   1.5625,
-            -0.5,  -0.25,  0.3125,
-            -0.5,  -0.25,  1.5625,
-            0.5,   0.25,  0.3125,  // right square
-            0.4,   0.2,   1.5625,
-            0.5,  -0.25,  0.3125,
-            0.5,  -0.25,  1.5625,
-            -0.25,  0.5,   0.3125,  // top square
-            0.25,  0.5,   0.3125,
-            -0.2,   0.4,   1.5625,
-            0.2,   0.4,   1.5625,
-            -0.25, -0.5,   0.3125,  // bottom square
-            0.25, -0.5,   0.3125,
-            -0.25, -0.5,   1.5625,
-            0.25, -0.5,   1.5625,
+            -0.065455,  0.065455, -0.054545,  // front square
+            0.065455,  0.065455, -0.054545,
+            -0.065455, -0.065455, -0.054545,
+            0.065455, -0.065455, -0.054545,
+            -0.032727,  0.032727,  0.600000,  // back square
+            0.032727,  0.032727,  0.600000,
+            -0.032727, -0.032727,  0.600000,
+            0.032727, -0.032727,  0.600000,
+            -0.130909,  0.065455,  0.109091,  // left square
+            -0.104727,  0.052364,  0.436364,
+            -0.130909, -0.065455,  0.109091,
+            -0.130909, -0.065455,  0.436364,
+            0.130909,  0.065455,  0.109091,  // right square
+            0.104727,  0.052364,  0.436364,
+            0.130909, -0.065455,  0.109091,
+            0.130909, -0.065455,  0.436364,
+            -0.065455,  0.130909,  0.109091,  // top square
+            0.065455,  0.130909,  0.109091,
+            -0.052364,  0.104727,  0.436364,
+            0.052364,  0.104727,  0.436364,
+            -0.065455, -0.130909,  0.109091,  // bottom square
+            0.065455, -0.130909,  0.109091,
+            -0.065455, -0.130909,  0.436364,
+            0.065455, -0.130909,  0.436364,
         ];
 
         let indices = vec![
@@ -391,30 +391,30 @@ impl CellarSpider {
 
     fn create_legseg_mesh() -> Mesh {
         let vertices = vec![
-            -0.025, -0.25, -0.05, // front square
-            0.025, -0.25, -0.05,
-            -0.025, -0.75, -0.05,
-            0.025, -0.75, -0.05,
-            -0.025, -0.25, 0.05, // back square
-            0.025, -0.25, 0.05,
-            -0.025, -0.75, 0.05,
-            0.025, -0.75, 0.05,
-            -0.05, -0.25, -0.025, // left square
-            -0.05, -0.25, 0.025,
-            -0.05, -0.75, -0.025,
-            -0.05, -0.75, 0.025,
-            0.05, -0.25, -0.025, // right square
-            0.05, -0.25, 0.025,
-            0.05, -0.75, -0.025,
-            0.05, -0.75, 0.025,
-            -0.025, 0.0, -0.025, // top square
-            0.025, 0.0, -0.025,
-            -0.025, 0.0, 0.025,
-            0.025, 0.0, 0.025,
-            -0.025, -1.0, -0.025, // bottom square
-            0.025, -1.0, -0.025,
-            -0.025, -1.0, 0.025,
-            0.025, -1.0, 0.025
+            -0.0025, -0.25, -0.005, // front square
+            0.0025, -0.25, -0.005,
+            -0.0025, -0.75, -0.005,
+            0.0025, -0.75, -0.005,
+            -0.0025, -0.25, 0.005, // back square
+            0.0025, -0.25, 0.005,
+            -0.0025, -0.75, 0.005,
+            0.0025, -0.75, 0.005,
+            -0.005, -0.25, -0.0025, // left square
+            -0.005, -0.25, 0.0025,
+            -0.005, -0.75, -0.0025,
+            -0.005, -0.75, 0.0025,
+            0.005, -0.25, -0.0025, // right square
+            0.005, -0.25, 0.0025,
+            0.005, -0.75, -0.0025,
+            0.005, -0.75, 0.0025,
+            -0.0025, 0.0, -0.0025, // top square
+            0.0025, 0.0, -0.0025,
+            -0.0025, 0.0, 0.0025,
+            0.0025, 0.0, 0.0025,
+            -0.0025, -1.0, -0.0025, // bottom square
+            0.0025, -1.0, -0.0025,
+            -0.0025, -1.0, 0.0025,
+            0.0025, -1.0, 0.0025
         ];
 
         let indices = vec![
@@ -504,20 +504,20 @@ impl HouseSpider {
             leg.coxa.transform.z = att.offset.z;
             leg.coxa.transform.yaw = att.base_yaw;
             leg.coxa.transform.pit = 20.0_f32.to_radians();
-            leg.coxa.length = 6.0 * scale;
+            leg.coxa.length = 1.5 * scale;
 
             leg.femur.transform.x = 0.0;
             leg.femur.transform.y = -leg.coxa.length;
             leg.femur.transform.z = 0.0;
             leg.femur.transform.pit = 40.0_f32.to_radians();
-            leg.femur.length = 6.0 * scale;
+            leg.femur.length = 1.5 * scale;
 
             leg.tibia.transform.y = -leg.femur.length;
             leg.tibia.transform.pit = (-70.0_f32).to_radians();
-            leg.tibia.length = 8.0 * scale;
+            leg.tibia.length = 2.5 * scale;
 
             leg.tarsus.transform.y = -leg.tibia.length;
-            leg.tarsus.length = 1.5 * scale;
+            leg.tarsus.length = 0.5 * scale;
 
             let leg_reach = leg.coxa.length + leg.femur.length
                 + leg.tibia.length + leg.tarsus.length;
@@ -586,12 +586,12 @@ impl HouseSpider {
     }
 
     pub fn update(&mut self, delta_time: f32) {
-        const STEP_TRIGGER_DIST: f32 = 10.0;
-        const STEP_HEIGHT: f32 = 5.0;
+        const STEP_TRIGGER_DIST: f32 = 2.0;
+        const STEP_HEIGHT: f32 = 1.5;
 
         let stride = STEP_TRIGGER_DIST + 0.1 * self.motive.speed;
         let step_speed = (self.motive.speed / (2.0 * stride)).max(100.0);
-        let group_stagger = 0.1 / self.motive.speed;
+        let group_stagger = 0.1 / (self.motive.speed * 1.5);
 
         self.anim_time += delta_time;
 
@@ -650,7 +650,7 @@ impl HouseSpider {
             self.motive.move_cool -= delta_time;
             if self.motive.move_cool <= 0.01 {
                 self.motive.move_time = rng.random_range(3.0..10.0);
-                self.motive.speed = rng.random_range(-10.0..100.0); 
+                self.motive.speed = rng.random_range(-5.0..50.0); 
                 self.motive.yaw_time = 0.1;
                 self.motive.delta_yaw = rng.random_range(-5.0..5.0);
             }
@@ -680,14 +680,14 @@ impl HouseSpider {
 
     fn create_legattach() -> [LegAttach; 8] {
         [
-            LegAttach { offset: Vec3::new(0.25, -0.5, 0.3), base_yaw: (-150.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(0.25, -0.5, 0.0), base_yaw: (-120.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(0.25, -0.5, -0.2), base_yaw: (-60.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(0.25, -0.5, -0.75), base_yaw: (-30.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.3), base_yaw: (150.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.0), base_yaw: (120.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, -0.2), base_yaw: (60.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, -0.75), base_yaw: (30.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.05, 0.03), base_yaw: (-150.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.05, 0.0), base_yaw: (-120.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.05, -0.02), base_yaw: (-60.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(0.05, -0.05, -0.075), base_yaw: (-30.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.05, 0.03), base_yaw: (150.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.05, 0.0), base_yaw: (120.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.05, -0.02), base_yaw: (60.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.05, -0.05, -0.075), base_yaw: (30.0_f32).to_radians() },
         ]
     }
 
@@ -700,55 +700,55 @@ impl HouseSpider {
 
     fn create_body_mesh() -> Mesh {
         let vertices = vec![
-            -0.375, -0.405, -2.5,  // front square
-            0.375, -0.405, -2.5,
-            -0.375, -1.395, -2.5,
-            0.375, -1.395, -2.5,
-            -0.375, -0.405,  0.5,  // back square
-            0.375, -0.405,  0.5,
-            -0.375, -1.395,  0.5,
-            0.375, -1.395,  0.5,
-            -0.75,  -0.405, -1.75, // left square
-            -0.75,  -0.405, -0.25,
-            -0.75,  -1.395, -1.75,
-            -0.75,  -1.395, -0.25,
-            0.75,  -0.405, -1.75, // right square
-            0.75,  -0.405, -0.25,
-            0.75,  -1.395, -1.75,
-            0.75,  -1.395, -0.25,
-            -0.375,  0.09,  -1.75, // top square
-            0.375,  0.09,  -1.75,
-            -0.375,  0.09,  -0.25,
-            0.375,  0.09,  -0.25,
-            -0.375, -1.89,  -1.75, // bottom square
-            0.375, -1.89,  -1.75,
-            -0.375, -1.89,  -0.25,
-            0.375, -1.89,  -0.25,
+            -0.109091, -0.117818, -0.750000,  // front square
+            0.109091, -0.117818, -0.750000,
+            -0.109091, -0.405818, -0.750000,
+            0.109091, -0.405818, -0.750000,
+            -0.109091, -0.117818,  0.122727,  // back square
+            0.109091, -0.117818,  0.122727,
+            -0.109091, -0.405818,  0.122727,
+            0.109091, -0.405818,  0.122727,
+            -0.218182, -0.117818, -0.531818,  // left square
+            -0.218182, -0.117818, -0.095455,
+            -0.218182, -0.405818, -0.531818,
+            -0.218182, -0.405818, -0.095455,
+            0.218182, -0.117818, -0.531818,  // right square
+            0.218182, -0.117818, -0.095455,
+            0.218182, -0.405818, -0.531818,
+            0.218182, -0.405818, -0.095455,
+            -0.109091,  0.026182, -0.531818,  // top square
+            0.109091,  0.026182, -0.531818,
+            -0.109091,  0.026182, -0.095455,
+            0.109091,  0.026182, -0.095455,
+            -0.109091, -0.549818, -0.531818,  // bottom square
+            0.109091, -0.549818, -0.531818,
+            -0.109091, -0.549818, -0.095455,
+            0.109091, -0.549818, -0.095455,
 
-            -0.5,   0.5,   -0.625,  // front square
-            0.5,   0.5,   -0.625,
-            -0.5,  -0.5,   -0.625,
-            0.5,  -0.5,   -0.625,
-            -0.25,  0.25,   4.375,  // back square
-            0.25,  0.25,   4.375,
-            -0.25, -0.25,   4.375,
-            0.25, -0.25,   4.375,
-            -1.0,   0.5,    0.625,  // left square
-            -0.8,   0.4,    3.125,
-            -1.0,  -0.5,    0.625,
-            -1.0,  -0.5,    3.125,
-            1.0,   0.5,    0.625,  // right square
-            0.8,   0.4,    3.125,
-            1.0,  -0.5,    0.625,
-            1.0,  -0.5,    3.125,
-            -0.5,   1.0,    0.625,  // top square
-            0.5,   1.0,    0.625,
-            -0.4,   0.8,    3.125,
-            0.4,   0.8,    3.125,
-            -0.5,  -1.0,    0.625,  // bottom square
-            0.5,  -1.0,    0.625,
-            -0.5,  -1.0,    3.125,
-            0.5,  -1.0,    3.125,
+            -0.145455,  0.145455, -0.204545,  // front square
+            0.145455,  0.145455, -0.204545,
+            -0.145455, -0.145455, -0.204545,
+            0.145455, -0.145455, -0.204545,
+            -0.072727,  0.072727,  1.250000,  // back square
+            0.072727,  0.072727,  1.250000,
+            -0.072727, -0.072727,  1.250000,
+            0.072727, -0.072727,  1.250000,
+            -0.290909,  0.145455,  0.159091,  // left square
+            -0.232727,  0.116364,  0.886364,
+            -0.290909, -0.145455,  0.159091,
+            -0.290909, -0.145455,  0.886364,
+            0.290909,  0.145455,  0.159091,  // right square
+            0.232727,  0.116364,  0.886364,
+            0.290909, -0.145455,  0.159091,
+            0.290909, -0.145455,  0.886364,
+            -0.145455,  0.290909,  0.159091,  // top square
+            0.145455,  0.290909,  0.159091,
+            -0.116364,  0.232727,  0.886364,
+            0.116364,  0.232727,  0.886364,
+            -0.145455, -0.290909,  0.159091,  // bottom square
+            0.145455, -0.290909,  0.159091,
+            -0.145455, -0.290909,  0.886364,
+            0.145455, -0.290909,  0.886364,
         ];
 
         let indices = vec![
@@ -848,30 +848,30 @@ impl HouseSpider {
 
     fn create_legseg_mesh() -> Mesh {
         let vertices = vec![
-            -0.05, -0.25, -0.1, // front square
-            0.05, -0.25, -0.1,
-            -0.05, -0.75, -0.1,
-            0.05, -0.75, -0.1,
-            -0.05, -0.25, 0.1, // back square
-            0.05, -0.25, 0.1,
-            -0.05, -0.75, 0.1,
-            0.05, -0.75, 0.1,
-            -0.1, -0.25, -0.05, // left square
-            -0.1, -0.25, 0.05,
-            -0.1, -0.75, -0.05,
-            -0.1, -0.75, 0.05,
-            0.1, -0.25, -0.05, // right square
-            0.1, -0.25, 0.05,
-            0.1, -0.75, -0.05,
-            0.1, -0.75, 0.05,
-            -0.05, 0.0, -0.05, // top square
-            0.05, 0.0, -0.05,
-            -0.05, 0.0, 0.05,
-            0.05, 0.0, 0.05,
-            -0.05, -1.0, -0.05, // bottom square
-            0.05, -1.0, -0.05,
-            -0.05, -1.0, 0.05,
-            0.05, -1.0, 0.05
+            -0.025, -0.25, -0.1, // front square
+            0.025, -0.25, -0.1,
+            -0.025, -0.75, -0.1,
+            0.025, -0.75, -0.1,
+            -0.025, -0.25, 0.1, // back square
+            0.025, -0.25, 0.1,
+            -0.025, -0.75, 0.1,
+            0.025, -0.75, 0.1,
+            -0.05, -0.25, -0.05, // left square
+            -0.05, -0.25, 0.05,
+            -0.05, -0.75, -0.05,
+            -0.05, -0.75, 0.05,
+            0.05, -0.25, -0.05, // right square
+            0.05, -0.25, 0.05,
+            0.05, -0.75, -0.05,
+            0.05, -0.75, 0.05,
+            -0.025, 0.0, -0.05, // top square
+            0.025, 0.0, -0.05,
+            -0.025, 0.0, 0.05,
+            0.025, 0.0, 0.05,
+            -0.025, -1.0, -0.05, // bottom square
+            0.025, -1.0, -0.05,
+            -0.025, -1.0, 0.05,
+            0.025, -1.0, 0.05
         ];
 
         let indices = vec![
@@ -1374,20 +1374,20 @@ impl Harvestman {
             leg.coxa.transform.z = att.offset.z;
             leg.coxa.transform.yaw = att.base_yaw;
             leg.coxa.transform.pit = 20.0_f32.to_radians();
-            leg.coxa.length = 4.0 * scale;
+            leg.coxa.length = 1.5 * scale;
 
             leg.femur.transform.x = 0.0;
             leg.femur.transform.y = -leg.coxa.length;
             leg.femur.transform.z = 0.0;
             leg.femur.transform.pit = 40.0_f32.to_radians();
-            leg.femur.length = 4.0 * scale;
+            leg.femur.length = 1.5 * scale;
 
             leg.tibia.transform.y = -leg.femur.length;
             leg.tibia.transform.pit = (-70.0_f32).to_radians();
-            leg.tibia.length = 9.5 * scale;
+            leg.tibia.length = 3.0 * scale;
 
             leg.tarsus.transform.y = -leg.tibia.length;
-            leg.tarsus.length = 4.0 * scale;
+            leg.tarsus.length = 1.0 * scale;
 
             let leg_reach = leg.coxa.length + leg.femur.length
                 + leg.tibia.length + leg.tarsus.length;
@@ -1456,8 +1456,8 @@ impl Harvestman {
     }
 
     pub fn update(&mut self, delta_time: f32) {
-        const STEP_TRIGGER_DIST: f32 = 5.0;
-        const STEP_HEIGHT: f32 = 20.0;
+        const STEP_TRIGGER_DIST: f32 = 3.0;
+        const STEP_HEIGHT: f32 = 10.0;
 
         let stride = STEP_TRIGGER_DIST + 0.1 * self.motive.speed;
         let step_speed = (self.motive.speed / (2.0 * stride)).max(5.0);
@@ -1570,30 +1570,30 @@ impl Harvestman {
 
     fn create_body_mesh() -> Mesh {
         let vertices = vec![
-            -0.5625, -0.6075, -1.5,   // front square
-            0.5625, -0.6075, -1.5,
-            -0.5625, -2.0925, -1.5,
-            0.5625, -2.0925, -1.5,
-            -0.5625, -0.6075,  1.5,   // back square
-            0.5625, -0.6075,  1.5,
-            -0.5625, -2.0925,  1.5,
-            0.5625, -2.0925,  1.5,
-            -1.125,  -0.6075, -0.75,  // left square
-            -1.125,  -0.6075,  0.75,
-            -1.125,  -2.0925, -0.75,
-            -1.125,  -2.0925,  0.75,
-            1.125,  -0.6075, -0.75,  // right square
-            1.125,  -0.6075,  0.75,
-            1.125,  -2.0925, -0.75,
-            1.125,  -2.0925,  0.75,
-            -0.5625,  0.135,  -0.75,  // top square
-            0.5625,  0.135,  -0.75,
-            -0.5625,  0.135,   0.75,
-            0.5625,  0.135,   0.75,
-            -0.5625, -2.835,  -0.75,  // bottom square
-            0.5625, -2.835,  -0.75,
-            -0.5625, -2.835,   0.75,
-            0.5625, -2.835,   0.75,
+            -0.16875, -0.18225, -0.600,  // front square
+            0.16875, -0.18225, -0.600,
+            -0.16875, -0.62775, -0.600,
+            0.16875, -0.62775, -0.600,
+            -0.16875, -0.18225,  0.300,  // back square
+            0.16875, -0.18225,  0.300,
+            -0.16875, -0.62775,  0.300,
+            0.16875, -0.62775,  0.300,
+            -0.33750, -0.18225, -0.375,  // left square
+            -0.33750, -0.18225,  0.075,
+            -0.33750, -0.62775, -0.375,
+            -0.33750, -0.62775,  0.075,
+            0.33750, -0.18225, -0.375,  // right square
+            0.33750, -0.18225,  0.075,
+            0.33750, -0.62775, -0.375,
+            0.33750, -0.62775,  0.075,
+            -0.16875,  0.04050, -0.375,  // top square
+            0.16875,  0.04050, -0.375,
+            -0.16875,  0.04050,  0.075,
+            0.16875,  0.04050,  0.075,
+            -0.16875, -0.85050, -0.375,  // bottom square
+            0.16875, -0.85050, -0.375,
+            -0.16875, -0.85050,  0.075,
+            0.16875, -0.85050,  0.075,
         ];
 
         let indices = vec![
@@ -1648,30 +1648,30 @@ impl Harvestman {
 
     fn create_legseg_mesh() -> Mesh {
         let vertices = vec![
-            -0.025, -0.25, -0.05, // front square
-            0.025, -0.25, -0.05,
-            -0.025, -0.75, -0.05,
-            0.025, -0.75, -0.05,
-            -0.025, -0.25, 0.05, // back square
-            0.025, -0.25, 0.05,
-            -0.025, -0.75, 0.05,
-            0.025, -0.75, 0.05,
-            -0.05, -0.25, -0.025, // left square
-            -0.05, -0.25, 0.025,
-            -0.05, -0.75, -0.025,
-            -0.05, -0.75, 0.025,
-            0.05, -0.25, -0.025, // right square
-            0.05, -0.25, 0.025,
-            0.05, -0.75, -0.025,
-            0.05, -0.75, 0.025,
-            -0.025, 0.0, -0.025, // top square
-            0.025, 0.0, -0.025,
-            -0.025, 0.0, 0.025,
-            0.025, 0.0, 0.025,
-            -0.025, -1.0, -0.025, // bottom square
-            0.025, -1.0, -0.025,
-            -0.025, -1.0, 0.025,
-            0.025, -1.0, 0.025
+            -0.0025, -0.25, -0.005, // front square
+            0.0025, -0.25, -0.005,
+            -0.0025, -0.75, -0.005,
+            0.0025, -0.75, -0.005,
+            -0.0025, -0.25, 0.005, // back square
+            0.0025, -0.25, 0.005,
+            -0.0025, -0.75, 0.005,
+            0.0025, -0.75, 0.005,
+            -0.005, -0.25, -0.0025, // left square
+            -0.005, -0.25, 0.0025,
+            -0.005, -0.75, -0.0025,
+            -0.005, -0.75, 0.0025,
+            0.005, -0.25, -0.0025, // right square
+            0.005, -0.25, 0.0025,
+            0.005, -0.75, -0.0025,
+            0.005, -0.75, 0.0025,
+            -0.0025, 0.0, -0.0025, // top square
+            0.0025, 0.0, -0.0025,
+            -0.0025, 0.0, 0.0025,
+            0.0025, 0.0, 0.0025,
+            -0.0025, -1.0, -0.0025, // bottom square
+            0.0025, -1.0, -0.0025,
+            -0.0025, -1.0, 0.0025,
+            0.0025, -1.0, 0.0025
         ];
 
         let indices = vec![
@@ -1765,20 +1765,20 @@ impl CraneFly {
             leg.coxa.transform.z = att.offset.z;
             leg.coxa.transform.yaw = att.base_yaw;
             leg.coxa.transform.pit = 20.0_f32.to_radians();
-            leg.coxa.length = 6.0 * scale;
+            leg.coxa.length = 2.5 * scale;
 
             leg.femur.transform.x = 0.0;
             leg.femur.transform.y = -leg.coxa.length;
             leg.femur.transform.z = 0.0;
             leg.femur.transform.pit = 40.0_f32.to_radians();
-            leg.femur.length = 6.0 * scale;
+            leg.femur.length = 2.5 * scale;
 
             leg.tibia.transform.y = -leg.femur.length;
             leg.tibia.transform.pit = (-70.0_f32).to_radians();
-            leg.tibia.length = 8.0 * scale;
+            leg.tibia.length = 4.0 * scale;
 
             leg.tarsus.transform.y = -leg.tibia.length;
-            leg.tarsus.length = 1.5 * scale;
+            leg.tarsus.length = 1.0 * scale;
 
             let leg_reach = leg.coxa.length + leg.femur.length
                 + leg.tibia.length + leg.tarsus.length;
@@ -1883,8 +1883,8 @@ impl CraneFly {
     }
 
     pub fn update(&mut self, delta_time: f32) {
-        const STEP_TRIGGER_DIST: f32 = 5.0;
-        const STEP_HEIGHT: f32 = 10.0;
+        const STEP_TRIGGER_DIST: f32 = 3.0;
+        const STEP_HEIGHT: f32 = 5.0;
 
         let stride = STEP_TRIGGER_DIST + 0.1 * self.motive.speed;
         let step_speed = (self.motive.speed / (2.0 * stride)).max(5.0);
@@ -1984,9 +1984,9 @@ impl CraneFly {
             LegAttach { offset: Vec3::new(0.25, -0.5, 0.3), base_yaw: (-135.0_f32).to_radians() },
             LegAttach { offset: Vec3::new(0.25, -0.5, 0.0), base_yaw: (-70.0_f32).to_radians() },
             LegAttach { offset: Vec3::new(0.25, -0.5, -0.2), base_yaw: (-15.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(0.25, -0.5, -0.75), base_yaw: (135.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.3), base_yaw: (70.0_f32).to_radians() },
-            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.0), base_yaw: (15.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.3), base_yaw: (135.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.25, -0.5, 0.0), base_yaw: (70.0_f32).to_radians() },
+            LegAttach { offset: Vec3::new(-0.25, -0.5, -0.2), base_yaw: (15.0_f32).to_radians() },
         ]
     }
 
@@ -1999,62 +1999,62 @@ impl CraneFly {
 
     fn create_wingattach() -> [WingAttach; 2] {
         [
-            WingAttach { offset: Vec3::new(0.25, 0.0, 2.0), base_yaw: (-90.0_f32).to_radians() },
-            WingAttach { offset: Vec3::new(-0.25, 0.0, 2.0), base_yaw: (90.0_f32).to_radians() },
+            WingAttach { offset: Vec3::new(0.25, 0.0, 2.0), base_yaw: (-45.0_f32).to_radians() },
+            WingAttach { offset: Vec3::new(-0.25, 0.0, 2.0), base_yaw: (45.0_f32).to_radians() },
         ]
     }
 
     fn create_body_mesh() -> Mesh {
         let vertices = vec![
-            -0.1875, -0.2025, -1.25,  // front square
-            0.1875, -0.2025, -1.25,
-            -0.1875, -0.6975, -1.25,
-            0.1875, -0.6975, -1.25,
-            -0.1875, -0.2025,  0.25,  // back square
-            0.1875, -0.2025,  0.25,
-            -0.1875, -0.6975,  0.25,
-            0.1875, -0.6975,  0.25,
-            -0.375,  -0.2025, -0.875, // left square
-            -0.375,  -0.2025, -0.125,
-            -0.375,  -0.6975, -0.875,
-            -0.375,  -0.6975, -0.125,
-            0.375,  -0.2025, -0.875, // right square
-            0.375,  -0.2025, -0.125,
-            0.375,  -0.6975, -0.875,
-            0.375,  -0.6975, -0.125,
-            -0.1875,  0.045,  -0.875, // top square
-            0.1875,  0.045,  -0.875,
-            -0.1875,  0.045,  -0.125,
-            0.1875,  0.045,  -0.125,
-            -0.1875, -0.945,  -0.875, // bottom square
-            0.1875, -0.945,  -0.875,
-            -0.1875, -0.945,  -0.125,
-            0.1875, -0.945,  -0.125,
+            -0.09375,  -0.10125, -1.25,   // front square
+            0.09375,  -0.10125, -1.25,
+            -0.09375,  -0.34875, -1.25,
+            0.09375,  -0.34875, -1.25,
+            -0.09375,  -0.10125,  0.25,   // back square
+            0.09375,  -0.10125,  0.25,
+            -0.09375,  -0.34875,  0.25,
+            0.09375,  -0.34875,  0.25,
+            -0.1875,   -0.10125, -0.875,  // left square
+            -0.1875,   -0.10125, -0.125,
+            -0.1875,   -0.34875, -0.875,
+            -0.1875,   -0.34875, -0.125,
+            0.1875,   -0.10125, -0.875,  // right square
+            0.1875,   -0.10125, -0.125,
+            0.1875,   -0.34875, -0.875,
+            0.1875,   -0.34875, -0.125,
+            -0.09375,   0.0225,  -0.875,  // top square
+            0.09375,   0.0225,  -0.875,
+            -0.09375,   0.0225,  -0.125,
+            0.09375,   0.0225,  -0.125,
+            -0.09375,  -0.4725,  -0.875,  // bottom square
+            0.09375,  -0.4725,  -0.875,
+            -0.09375,  -0.4725,  -0.125,
+            0.09375,  -0.4725,  -0.125,
 
-            -0.25,  0.25, -0.3125,  // front square
-            0.25,  0.25, -0.3125,
-            -0.25, -0.25, -0.3125,
-            0.25, -0.25, -0.3125,
-            -0.125, 0.125, 10.1875,  // back square
-            0.125, 0.125, 10.1875,
-            -0.125,-0.125, 10.1875,
-            0.125,-0.125, 10.1875,
-            -0.5,   0.25,  0.3125,  // left square
-            -0.4,   0.2,   1.5625,
-            -0.5,  -0.25,  0.3125,
-            -0.5,  -0.25,  1.5625,
-            0.5,   0.25,  0.3125,  // right square
-            0.4,   0.2,   1.5625,
-            0.5,  -0.25,  0.3125,
-            0.5,  -0.25,  1.5625,
-            -0.25,  0.5,   0.3125,  // top square
-            0.25,  0.5,   0.3125,
-            -0.2,   0.4,   1.5625,
-            0.2,   0.4,   1.5625,
-            -0.25, -0.5,   0.3125,  // bottom square
-            0.25, -0.5,   0.3125,
-            -0.25, -0.5,   1.5625,
-            0.25, -0.5,   1.5625,
+            -0.125,    0.125,   -0.3125,  // front square
+            0.125,    0.125,   -0.3125,
+            -0.125,   -0.125,   -0.3125,
+            0.125,   -0.125,   -0.3125,
+            -0.0625,   0.0625,   5.1875, // back square
+            0.0625,   0.0625,   5.1875,
+            -0.0625,  -0.0625,   5.1875,
+            0.0625,  -0.0625,   5.1875,
+            -0.25,     0.125,    0.3125,  // left square
+            -0.2,      0.1,      1.5625,
+            -0.25,    -0.125,    0.3125,
+            -0.25,    -0.125,    1.5625,
+            0.25,     0.125,    0.3125,  // right square
+            0.2,      0.1,      1.5625,
+            0.25,    -0.125,    0.3125,
+            0.25,    -0.125,    1.5625,
+            -0.125,    0.25,     0.3125,  // top square
+            0.125,    0.25,     0.3125,
+            -0.1,      0.2,      1.5625,
+            0.1,      0.2,      1.5625,
+            -0.125,   -0.25,     0.3125,  // bottom square
+            0.125,   -0.25,     0.3125,
+            -0.125,   -0.25,     1.5625,
+            0.125,   -0.25,     1.5625,
         ];
 
         let indices = vec![
@@ -2154,30 +2154,30 @@ impl CraneFly {
 
     fn create_legseg_mesh() -> Mesh {
         let vertices = vec![
-            -0.025, -0.25, -0.05, // front square
-            0.025, -0.25, -0.05,
-            -0.025, -0.75, -0.05,
-            0.025, -0.75, -0.05,
-            -0.025, -0.25, 0.05, // back square
-            0.025, -0.25, 0.05,
-            -0.025, -0.75, 0.05,
-            0.025, -0.75, 0.05,
-            -0.05, -0.25, -0.025, // left square
-            -0.05, -0.25, 0.025,
-            -0.05, -0.75, -0.025,
-            -0.05, -0.75, 0.025,
-            0.05, -0.25, -0.025, // right square
-            0.05, -0.25, 0.025,
-            0.05, -0.75, -0.025,
-            0.05, -0.75, 0.025,
-            -0.025, 0.0, -0.025, // top square
-            0.025, 0.0, -0.025,
-            -0.025, 0.0, 0.025,
-            0.025, 0.0, 0.025,
-            -0.025, -1.0, -0.025, // bottom square
-            0.025, -1.0, -0.025,
-            -0.025, -1.0, 0.025,
-            0.025, -1.0, 0.025
+            -0.0025, -0.25, -0.005, // front square
+            0.0025, -0.25, -0.005,
+            -0.0025, -0.75, -0.005,
+            0.0025, -0.75, -0.005,
+            -0.0025, -0.25, 0.005, // back square
+            0.0025, -0.25, 0.005,
+            -0.0025, -0.75, 0.005,
+            0.0025, -0.75, 0.005,
+            -0.005, -0.25, -0.0025, // left square
+            -0.005, -0.25, 0.0025,
+            -0.005, -0.75, -0.0025,
+            -0.005, -0.75, 0.0025,
+            0.005, -0.25, -0.0025, // right square
+            0.005, -0.25, 0.0025,
+            0.005, -0.75, -0.0025,
+            0.005, -0.75, 0.0025,
+            -0.0025, 0.0, -0.0025, // top square
+            0.0025, 0.0, -0.0025,
+            -0.0025, 0.0, 0.0025,
+            0.0025, 0.0, 0.0025,
+            -0.0025, -1.0, -0.0025, // bottom square
+            0.0025, -1.0, -0.0025,
+            -0.0025, -1.0, 0.0025,
+            0.0025, -1.0, 0.0025
         ];
 
         let indices = vec![
@@ -2233,11 +2233,11 @@ impl CraneFly {
     fn create_wing_mesh() -> Mesh {
         let vertices = vec![
             0.0, 0.0, 0.0,
-            0.0, 10.0, 0.0,
-            1.0, 10.0, 0.0,
-            0.25, 11.0, 0.0,
-            0.75, 11.0, 0.0,
-            0.5, 11.5, 0.0,
+            0.0, 5.0, 0.0,
+            0.5, 5.0, 0.0,
+            0.125, 5.5, 0.0,
+            0.375, 5.5, 0.0,
+            0.25, 5.75, 0.0,
         ];
 
         let indices = vec![

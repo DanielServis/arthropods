@@ -171,17 +171,13 @@ fn main() {
     let mut delta_time;
     let mut last_time = 0.0;
 
-    let mut cellar_spider = CellarSpider::new(0.0, 0.0, 0.0);
-    let mut cellar_spider2 = CellarSpider::new(0.0, 0.0, 100.0);
-    let mut cellar_spider3 = CellarSpider::new(0.0, 0.0, -100.0);
-    let mut cellar_spider4 = CellarSpider::new(-100.0, 0.0, 100.0);
-    let mut cellar_spider5 = CellarSpider::new(-100.0, 0.0, -100.0);
+    let mut cellar_spider = CellarSpider::new(-20.0, 0.0, 20.0);
 
-    let mut house_spider = HouseSpider::new(-100.0, 0.0, 0.0);
+    let mut house_spider = HouseSpider::new(-20.0, 0.0, -20.0);
 
-    let mut harvestman = Harvestman::new(0.0, 0.0, 0.0);
+    let mut harvestman = Harvestman::new(20.0, 0.0, 20.0);
 
-    let mut crane_fly = CraneFly::new(0.0, 0.0, 0.0);
+    let mut crane_fly = CraneFly::new(20.0, 0.0, -20.0);
 
     while !window.should_close() {
         unsafe {
@@ -197,7 +193,7 @@ fn main() {
         let far = 1000.0_f32;
 
         let view = Mat4::from_rotation_x(45.0_f32.to_radians())
-            * Mat4::from_translation(Vec3::new(0.0, -150.0, -175.0));
+            * Mat4::from_translation(Vec3::new(0.0, -75.0, -87.5));
 
         let projection = glam::camera::rh::proj::opengl::perspective(fov, aspect, near, far);
 
@@ -212,19 +208,7 @@ fn main() {
 
         cellar_spider.behave(delta_time);
         cellar_spider.update(delta_time);
-        cellar_spider.draw(model_loc);
-        cellar_spider2.behave(delta_time);
-        cellar_spider2.update(delta_time);
-        cellar_spider2.draw(model_loc);
-        cellar_spider3.behave(delta_time);
-        cellar_spider3.update(delta_time);
-        cellar_spider3.draw(model_loc);
-        cellar_spider4.behave(delta_time);
-        cellar_spider4.update(delta_time);
-        cellar_spider4.draw(model_loc);
-        cellar_spider5.behave(delta_time);
-        cellar_spider5.update(delta_time);
-        cellar_spider5.draw(model_loc);
+        cellar_spider.draw(model_loc); 
 
         house_spider.behave(delta_time);
         house_spider.update(delta_time);

@@ -244,6 +244,5 @@ impl Wing {
             self.transform.yaw = 0.0;
             self.transform.rol = -90.0;
         }
-        //self.transform.rol += delta_time;
     }
 }
