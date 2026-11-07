@@ -9,7 +9,7 @@ mod things;
 mod limbs;
 mod arthropods;
 
-use arthropods::{CellarSpider, HouseSpider, Harvestman, CraneFly};
+use arthropods::{CellarSpider, HouseSpider, FalseWidow, HouseCentipede, Harvestman, CraneFly};
 
 fn compile_shader(kind: GLenum, source: &str) -> Result<GLuint, String> {
     let c_src = CString::new(source).map_err(|e| e.to_string())?;
@@ -185,11 +185,10 @@ fn main() {
     let mut last_time = 0.0;
 
     let mut cellar_spider = CellarSpider::new(-20.0, 0.0, 20.0);
-
     let mut house_spider = HouseSpider::new(-20.0, 0.0, -20.0);
-
+    let mut false_widow = FalseWidow::new(0.0, 0.0, 0.0);
+    let mut house_centipede = HouseCentipede::new(-30.0, 0.0, 0.0);
     let mut harvestman = Harvestman::new(20.0, 0.0, 20.0);
-
     let mut crane_fly = CraneFly::new(20.0, 0.0, -20.0);
 
     while !window.should_close() {
@@ -226,6 +225,14 @@ fn main() {
         house_spider.behave(delta_time);
         house_spider.update(delta_time);
         house_spider.draw(model_loc);
+
+        false_widow.behave(delta_time);
+        false_widow.update(delta_time);
+        false_widow.draw(model_loc);
+
+        house_centipede.behave(delta_time);
+        house_centipede.update(delta_time);
+        house_centipede.draw(model_loc);
 
         harvestman.behave(delta_time);
         harvestman.update(delta_time);
