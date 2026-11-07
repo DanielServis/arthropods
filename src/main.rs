@@ -149,15 +149,28 @@ fn main() {
     let (fb_w, fb_h) = window.get_framebuffer_size();
     unsafe { gl::Viewport(0, 0, fb_w, fb_h) };
 
-    unsafe { gl::Enable(gl::DEPTH_TEST) }; 
+    unsafe { gl::Enable(gl::DEPTH_TEST) };
 
-    let shader_program = match create_shader_program("vertex_shader.glsl", "fragment_shader.glsl") {
-        Ok(p) => p,
-        Err(e) => {
-            eprintln!("{e}");
-            return;
-        }
-    };
+    let mut shader_program;
+
+    if embedded {
+        shader_program = match create_shader_program("src/vertex_shader.glsl", "src/fragment_shader.glsl") {
+            Ok(p) => p,
+            Err(e) => {
+                eprintln!("{e}");
+                return;
+            }
+        };
+    }
+    else {
+        shader_program = match create_shader_program("vertex_shader.glsl", "fragment_shader.glsl") {
+            Ok(p) => p,
+            Err(e) => {
+                eprintln!("{e}");
+                return;
+            }
+        };
+    }
 
     let model_name = CString::new("model").unwrap();
     let model_loc: GLint = unsafe { gl::GetUniformLocation(shader_program, model_name.as_ptr()) };
